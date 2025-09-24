@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalender Program Kerja PAGUMA Lebak</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="main-container">
+        <div class="calendar-section">
+            <div class="header">
+                <button id="prevMonthBtn">‹</button>
+                <h2 id="monthYearHeader"></h2>
+                <button id="nextMonthBtn">›</button>
+            </div>
+            <div class="filters">
+                <label class="filter-item"><input type="checkbox" class="dept-filter" value="sdm" checked><span class="filter-color sdm-bg"></span> SDM</label>
+                <label class="filter-item"><input type="checkbox" class="dept-filter" value="edusosmas" checked><span class="filter-color edusosmas-bg"></span> EDUSOSMAS</label>
+                <label class="filter-item"><input type="checkbox" class="dept-filter" value="kestra" checked><span class="filter-color kestra-bg"></span> KESTRA</label>
+                <label class="filter-item"><input type="checkbox" class="dept-filter" value="medkraf" checked><span class="filter-color medkraf-bg"></span> MEDKRAF</label>
+            </div>
+            <canvas id="calendar-canvas"></canvas>
+        </div>
+        <div class="agenda-section">
+            <div class="header">
+                <h2>Agenda Bulan Ini</h2>
+                <button id="addProkerBtn">Tambah Proker</button>
+            </div>
+            <div id="agendaList">
+                <p>Menghubungkan ke database...</p>
+            </div>
+        </div>
+    </div>
+    <div id="prokerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3 id="formTitle">Tambah Program Kerja Baru</h3>
+            <form id="prokerForm">
+                <div class="form-group">
+                    <label for="prokerTitle">Nama Program Kerja</label>
+                    <input type="text" id="prokerTitle" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="prokerDate">Tanggal</label>
+                    <input type="date" id="prokerDate" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="prokerDepartment">Departemen</label>
+                    <select id="prokerDepartment" name="department" required>
+                        <option value="SDM">SDM</option>
+                        <option value="EDUSOSMAS">EDUSOSMAS</option>
+                        <option value="KESTRA">KESTRA</option>
+                        <option value="MEDKRAF">MEDKRAF</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="prokerDescription">Deskripsi</label>
+                    <textarea id="prokerDescription" name="description" rows="3" placeholder="Contoh: H-2 Revisi..."></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="btn-primary">Simpan</button>
+                    <button type="button" class="btn-secondary" onclick="this.closest('.modal').style.display='none'">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Scripts -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
+
