@@ -65,40 +65,25 @@ class App {
         };
     }
 
-    setupEventListeners() {
-        // Listen for new events added
-        window.addEventListener('prokerAdded', () => {
-            console.log('Event added, refreshing data...');
-            this.loadEvents();
-        });
-
-        // Department filter checkboxes
-        const deptCheckboxes = document.querySelectorAll('.dept-filter');
-        deptCheckboxes.forEach(cb => {
-            cb.addEventListener('change', () => {
-                this.activeDepartments = Array.from(deptCheckboxes)
-                    .filter(c => c.checked)
-                    .map(c => c.nextSibling.textContent.trim().toUpperCase());
-                this.updateFilteredViews();
-            });
-        });
-    }
-
     updateFilteredViews() {
         // Filter events by active departments (case-insensitive)
         const filteredEvents = this.events.filter(ev =>
             this.activeDepartments.some(dep => dep.toUpperCase() === (ev.department || '').toUpperCase())
         );
         if (this.calendar) {
-            this.calendar.setMonthYear(this.currentMonth, this.currentYear);
             this.calendar.updateEvents(filteredEvents);
         }
         if (this.agenda) {
             this.agenda.updateEvents(filteredEvents, this.currentMonth, this.currentYear);
         }
     }
+    
+    updateCalendarView() {
+        if (this.calendar) {
+            this.calendar.setMonthYear(this.currentMonth, this.currentYear);
+        }
+    }
 
-    // Navigation and add proker event listeners moved here
     setupEventListeners() {
         // Listen for new events added
         window.addEventListener('prokerAdded', () => {
@@ -112,7 +97,16 @@ class App {
             cb.addEventListener('change', () => {
                 this.activeDepartments = Array.from(deptCheckboxes)
                     .filter(c => c.checked)
-                    .map(c => c.nextSibling.textContent.trim().toUpperCase());
+                    .map(c => {
+                        // Convert checkbox values to match department names in database
+                        const valueMap = {
+                            'sdm': 'SDM',
+                            'edusosmas': 'EDUSOSMAS',
+                            'kestra': 'KESTRA',
+                            'medkraf': 'MEDKRAF'
+                        };
+                        return valueMap[c.value] || c.value.toUpperCase();
+                    });
                 this.updateFilteredViews();
             });
         });
@@ -127,6 +121,7 @@ class App {
                     this.currentMonth = 12;
                     this.currentYear--;
                 }
+                this.updateCalendarView(); // Update calendar view first
                 this.loadEvents();
             });
         }
@@ -137,6 +132,7 @@ class App {
                     this.currentMonth = 1;
                     this.currentYear++;
                 }
+                this.updateCalendarView(); // Update calendar view first
                 this.loadEvents();
             });
         }
@@ -180,6 +176,7 @@ class App {
 
                 console.log('Loaded events:', this.events);
 
+                this.updateCalendarView(); // Ensure calendar is set to correct month first
                 this.updateFilteredViews();
 
                 // Remove loading message

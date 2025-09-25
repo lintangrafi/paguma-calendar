@@ -78,16 +78,18 @@ export class Calendar {
         // Draw days of week
         const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
         this.ctx.textAlign = 'center';
-        this.ctx.fillStyle = '#333';
-        this.ctx.font = '14px Arial';
+        this.ctx.fillStyle = '#7f8c8d'; // More professional gray
+        this.ctx.font = 'bold 16px "Segoe UI", sans-serif';
+        this.ctx.textBaseline = 'middle';
 
         days.forEach((day, i) => {
             this.ctx.fillText(day, cellWidth * i + cellWidth / 2, headerHeight / 2);
         });
 
-        // Draw grid lines
-        this.ctx.strokeStyle = '#ddd';
+        // Draw grid lines with more subtle styling
+        this.ctx.strokeStyle = '#e0e0e0';
         this.ctx.lineWidth = 1;
+        this.ctx.setLineDash([]);
 
         // Vertical lines
         for (let i = 0; i <= 7; i++) {
@@ -123,9 +125,10 @@ export class Calendar {
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        this.ctx.textAlign = 'left';
-        this.ctx.fillStyle = '#333';
-        this.ctx.font = '14px Arial';
+        // Set default font and color for dates
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.font = '16px "Segoe UI", sans-serif';
 
         let day = 1;
         for (let row = 0; row < 6; row++) {
@@ -134,7 +137,7 @@ export class Calendar {
                 if (cellIndex < firstDay || day > daysInMonth) continue;
 
                 const x = col * cellWidth + cellWidth / 2;
-                const y = headerHeight + row * cellHeight + cellHeight / 2;
+                const y = headerHeight + row * cellHeight + cellHeight / 2 + cellHeight * 0.1; // Adjusted Y position to make room for markers
 
                 // Highlight hari ini
                 const today = new Date();
@@ -143,20 +146,27 @@ export class Calendar {
                     month === today.getMonth() &&
                     year === today.getFullYear()
                 ) {
+                    // Draw circle background for today
                     this.ctx.save();
                     this.ctx.beginPath();
-                    this.ctx.arc(x, y - 8, cellWidth * 0.38, 0, 2 * Math.PI);
-                    this.ctx.fillStyle = 'rgba(52,152,219,0.18)';
-                    this.ctx.fill();
-                    this.ctx.restore();
+                    this.ctx.arc(x, y - 5, cellWidth * 0.15, 0, 2 * Math.PI); // Smaller circle
                     this.ctx.fillStyle = '#3498db';
-                    this.ctx.font = 'bold 1.1em Segoe UI';
+                    this.ctx.fill();
+                    this.ctx.strokeStyle = '#2980b9';
+                    this.ctx.lineWidth = 1;
+                    this.ctx.stroke();
+                    this.ctx.restore();
+                    
+                    // Draw date text for today
+                    this.ctx.fillStyle = '#fff';
+                    this.ctx.font = 'bold 18px "Segoe UI", sans-serif';
+                    this.ctx.fillText(day.toString(), x, y);
                 } else {
-                    this.ctx.fillStyle = '#2c3e50';
-                    this.ctx.font = '1em Segoe UI';
+                    // Draw regular date
+                    this.ctx.fillStyle = '#34495e';
+                    this.ctx.font = '16px "Segoe UI", sans-serif';
+                    this.ctx.fillText(day.toString(), x, y);
                 }
-                this.ctx.textAlign = 'center';
-                this.ctx.fillText(day.toString(), x, y);
                 day++;
             }
         }
@@ -190,18 +200,17 @@ export class Calendar {
             const col = cellIndex % 7;
 
             const x = col * cellWidth + cellWidth / 2;
-            const y = headerHeight + row * cellHeight + cellHeight / 2 + cellHeight * 0.32;
+            const y = headerHeight + row * cellHeight + cellHeight / 2 + cellHeight * 0.35; // Positioned below the date number
 
             console.log(`[Calendar] Marker: day=${day}, cellIndex=${cellIndex}, row=${row}, col=${col}, x=${x}, y=${y}`);
 
             // Draw event marker (dot)
             this.ctx.save();
             this.ctx.beginPath();
-            this.ctx.arc(x, y, cellWidth * 0.18, 0, 2 * Math.PI);
+            this.ctx.arc(x, y, cellWidth * 0.08, 0, 2 * Math.PI); // Smaller marker
             this.ctx.globalAlpha = 1;
             this.ctx.fillStyle = this.getDepartmentColor(event.department);
-            this.ctx.shadowColor = '#222';
-            this.ctx.shadowBlur = 8;
+            this.ctx.shadowColor = 'transparent'; // Remove shadow for cleaner look
             this.ctx.fill();
             this.ctx.restore();
             markerDrawn = true;
@@ -215,7 +224,7 @@ export class Calendar {
         const colors = {
             'SDM': '#4CAF50',
             'EDUSOSMAS': '#2196F3',
-            'KESTRA': '#FFC107',
+            'KESTRA': '#FF9800',
             'MEDKRAF': '#9C27B0'
         };
         return colors[department] || '#757575';
