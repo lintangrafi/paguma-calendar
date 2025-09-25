@@ -50,7 +50,7 @@ Aplikasi ini menyatukan antara kalender visual dan daftar agenda dalam satu tamp
 
 1. **Clone repositori ini**
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/lintangrafi/paguma-calendar
    cd paguma-calendar
    ```
 
@@ -85,7 +85,7 @@ paguma-calendar/
 ├── index.html              # Struktur halaman utama
 ├── css/
 │   ├── style.css          # Gaya utama aplikasi
-│   └── modal.css          # Gaya untuk modal (jika ada)
+│   └── modal.css          # Gaya untuk modal
 ├── js/
 │   ├── calendar.js        # Logika tampilan kalender
 │   ├── agenda.js          # Logika daftar agenda
@@ -135,18 +135,6 @@ Kontribusi sangat dipersilakan! Berikut langkah-langkahnya:
 ## 📜 Lisensi
 
 Proyek ini dilisensikan di bawah Lisensi MIT - lihat file [LICENSE](LICENSE) untuk detail lebih lanjut.
-
-## Penulis
-
-- **[Nama Anda/Team Pengembang]** - *Pengembang Utama* - [GitHub Anda](https://github.com/username)
-
-## Acknowledgments
-
-- Terima kasih kepada seluruh anggota PAGUMA Lebak atas dukungan dan masukan dalam pengembangan aplikasi ini
-- Firebase untuk layanan backend yang handal
-- Komunitas open source atas berbagai library dan alat yang digunakan
-
----
 
 <div align="center">
   <sub>Dikembangkan dengan ❤️ untuk PAGUMA Lebak</sub>
